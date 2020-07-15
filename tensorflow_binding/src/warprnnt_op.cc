@@ -7,6 +7,7 @@
 #include "tensorflow/core/framework/op_kernel.h"
 #include "tensorflow/core/framework/bounds_check.h"
 #include "tensorflow/core/framework/allocator.h"
+#include "tensorflow/core/framework/shape_inference.h"
 #include "rnnt.h"
 
 
@@ -17,7 +18,14 @@ REGISTER_OP("WarpRNNT")
     .Input("label_lengths: int32")
     .Attr("blank_label: int = 0")
     .Output("costs: float32")
-    .Output("grads: float32");
+    .Output("grads: float32")
+    .SetShapeFn([](::tensorflow::shape_inference::InferenceContext* c) {
+      ::tensorflow::shape_inference::ShapeHandle input;
+      TF_RETURN_IF_ERROR(c->WithRank(c->input(0), 4, &input));
+      c->set_output(0, c->Vector(c->Dim(input, 0)));
+      c->set_output(1, input);
+      return ::tensorflow::Status::OK();
+    });;
 
 namespace tf = tensorflow;
 

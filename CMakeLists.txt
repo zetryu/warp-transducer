@@ -94,6 +94,7 @@ ENDIF()
 IF (WITH_GPU)
 
     MESSAGE(STATUS "Building shared library with GPU support")
+    set(CUDA_curand_LIBRARY "/usr/local/cuda/lib64/libcurand.so.10")
 
     CUDA_ADD_LIBRARY(warprnnt SHARED src/rnnt_entrypoint.cu)
     IF (!Torch_FOUND)
