@@ -24,7 +24,7 @@ REGISTER_OP("WarpRNNT")
       TF_RETURN_IF_ERROR(c->WithRank(c->input(0), 4, &input));
       c->set_output(0, c->Vector(c->Dim(input, 0)));
       c->set_output(1, input);
-      return ::tensorflow::Status::OK();
+      return ::tensorflow::Status();
     });;
 
 namespace tf = tensorflow;
